@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Set Cookie</title>
+    <script src="http://onk83djzp.bkt.clouddn.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        #cbody{
+            width: 600px;
+            height: 300px;
+            display:block;
+            word-break: break-all;
+            word-wrap: break-word;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Set Cookie</h2>
+    <input id="inp" type="text" name="cookie" style="width: 300px" maxlength="1000">
+    <h2>key</h2>
+    <input id="key" type="password" name="key">
+    <button id="submit" po="{{ info.url }}">submit</button>
+    <h3>Current cookie</h3>
+    <div id="cbody">
+        <p id="msg"></p>
+        <div id="cookie" class="well well-sm" style="width: 600px;word-break: break-all;
+            word-wrap: break-word;">{{ info.cookie }}</div>
+    </div>
+
+</body>
+<script>
+        $('#submit').on('click',function () {
+            $.ajax({
+                url:$("#submit").attr("po"),
+                type:'POST',
+                dataType:'JSON',
+                data:{
+                    'key':$("#key").val(),
+                    'cookie':$("#inp").val()
+
+                },
+                success:function (data) {
+                    if (data.status){
+                        $("#cookie").text(data.msg).css("color",'red');
+                        location.reload();
+                    }else{
+                        $("#msg").text(data.msg).css("color",'red')
+                    }
+                }
+            })
+        })
+</script>
+</html>

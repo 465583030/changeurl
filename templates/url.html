@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Manual</title>
+    <script src="http://onk83djzp.bkt.clouddn.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <h2>Manual URL</h2>
+    <div>
+        <h3>SELECT MESO URL</h3>
+        {% for row in info.meso_url %}
+            <input type="radio" name="meso_url" value="{{ row.id }}">{{ row.url }}<br>
+        {% endfor %}
+    </div>
+    <p>
+        <input type="text" name="url" id="inp">
+        <button id="submit">change</button>
+
+    </p>
+    <a id="url" href="" target="_blank"></a>
+    <h3>ERROE MSG</h3>
+    <span id="errormsg">NONE</span>
+</body>
+    <script>
+        $("input[name='meso_url']").eq(0).attr("checked",true);         /* 默认选中第一个 */
+        $("#errormsg").text('');
+        $("#submit").on('click',function () {
+            console.log($("input[name='meso_url']:checked").val());
+            if ($("#inp").val() == ''){
+                alert("No url entered!");
+            }else {
+                 $.ajax({
+                    url:"{{ info.url }}",
+                    type:"POST",
+                    dataType:"JSON",
+                    data :{
+                        'id':$("input[name='meso_url']:checked").val(),
+                        'url':$("#inp").val()},
+                        success:function (data) {
+                            if (data.status){
+                                $("#url").text(data.url);
+                                $("#url").prop("href",data.url);
+                                console.log(data,'ok')
+                            }else {
+                                $("#errormsg").text(data.msg).css('color','red');
+                                console.log(data.msg,'error')
+                            }
+                        }
+                })
+            }
+        })
+    </script>
+</html>
