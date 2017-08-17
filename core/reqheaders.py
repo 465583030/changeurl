@@ -1,3 +1,5 @@
+#!/usr/bin/env python3  
+#-*- coding: utf-8 -*- 
 from core import db_handler
 import json
 
